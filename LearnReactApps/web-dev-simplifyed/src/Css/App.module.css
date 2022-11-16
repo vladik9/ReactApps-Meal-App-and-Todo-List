@@ -1,0 +1,13 @@
+@import-normalize;
+@import "Fonts.module.css";
+
+*, *::before, *::after{
+     font-family: Gotham Rounded, sans-serif;
+}
+
+html{font-size: 25px;}
+
+body{
+    margin: 0;
+    padding: 0;
+}

@@ -1,5 +1,6 @@
 import React from "react";
 import RecepieList from "./Components/RecepieList/RecepieList";
+import styles from "./Css/App.module.css";
 export default function App() {
   const sampleRecepies = [
     {
