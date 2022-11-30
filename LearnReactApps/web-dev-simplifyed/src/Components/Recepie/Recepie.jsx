@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import IngredientsList from "../IngredientsList/IngredientsList";
 import btnStyle from "../../Css/Btn.module.css";
+import { CrudContext } from "../../context/context";
 
 export default function Recepie(props) {
+  const ctx = useContext(CrudContext);
   const {
     name,
     coockTime,
@@ -22,13 +24,13 @@ export default function Recepie(props) {
       </div>
       <button
         className={editBtnStyle}
-        onClick={() => handleUpdateRecepe(props.id)}
+        onClick={() => ctx.handleUpdateRecepe(props.id)}
       >
         Edit
       </button>
       <button
         className={deleteBtnStyle}
-        onClick={() => handleDeleteRecepe(props.id)}
+        onClick={() => ctx.handleDeleteRecepe(props.id)}
       >
         Delete
       </button>

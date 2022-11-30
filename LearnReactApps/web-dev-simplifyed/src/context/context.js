@@ -8,7 +8,8 @@ export const CrudContext = createContext({
   handleUpdateRecepe: () => {},
 });
 
-export function MainCrudContext() {
+export default function MainContext(props) {
+  //initial recipe
   const sampleRecepies = [
     {
       id: uuidv4(),
@@ -50,6 +51,7 @@ export function MainCrudContext() {
     },
   ];
   const [recepies, setRecepies] = useState(sampleRecepies);
+  //here we handle new recpe
   const handleRecepieAdd = () => {
     const newRecepie = {
       id: uuidv4(),
@@ -77,11 +79,13 @@ export function MainCrudContext() {
   return (
     <CrudContext.Provider
       value={{
-        recepiesList: recepies,
+        recepies: recepies,
         handleRecepieAdd: handleRecepieAdd,
         handleDeleteRecepe: handleDeleteRecepe,
         handleUpdateRecepe: handleUpdateRecepe,
       }}
-    ></CrudContext.Provider>
+    >
+      {props.children}
+    </CrudContext.Provider>
   );
 }
