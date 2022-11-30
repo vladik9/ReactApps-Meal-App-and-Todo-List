@@ -1,8 +1,9 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
+const recepieStorageToken = "recepieStorageToken";
 //initial recipe
 export const CrudContext = createContext({
-  recepiesList: "",
+  recepies: "",
   handleRecepieAdd: () => {},
   handleDeleteRecepe: () => {},
   handleUpdateRecepe: () => {},
@@ -53,36 +54,48 @@ export default function MainContext(props) {
   const [recepies, setRecepies] = useState(sampleRecepies);
   //here we handle new recpe
   const handleRecepieAdd = () => {
+    const id = uuidv4();
     const newRecepie = {
-      id: uuidv4(),
-      name: "new recepie",
-      serving: 1,
-      coockTime: "1:45",
-      instructions: "1.Put 1 2.Put 2 3.Put 3 4.Put 4 5.Put 5",
+      id: id,
+      name: "",
+      serving: "",
+      coockTime: "",
+      instructions: "",
       ingredients: [
         {
           id: uuidv4(),
-          name: "Chicken",
-          amount: "0.5 kg",
+          name: "",
+          amount: "",
         },
       ],
     };
-
     setRecepies([...recepies, newRecepie]);
   };
   const handleDeleteRecepe = (id) => {
     const new_list = recepies.filter((item) => item.id !== id);
     setRecepies(new_list);
   };
+  useEffect(() => {
+    const recepieJson = localStorage.getItem(recepieStorageToken);
+    if (recepieJson !== null) {
+      setRecepies(JSON.parse(recepieJson));
+    }
+    localStorage.setItem(recepieStorageToken, JSON.stringify(sampleRecepies));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(recepieStorageToken, JSON.stringify(recepies));
+  }, [recepies]);
+
   const handleUpdateRecepe = () => {};
 
   return (
     <CrudContext.Provider
       value={{
-        recepies: recepies,
-        handleRecepieAdd: handleRecepieAdd,
-        handleDeleteRecepe: handleDeleteRecepe,
-        handleUpdateRecepe: handleUpdateRecepe,
+        recepies,
+        handleRecepieAdd,
+        handleDeleteRecepe,
+        handleUpdateRecepe,
       }}
     >
       {props.children}

@@ -5,15 +5,15 @@ import btnStyle from "../../Css/Btn.module.css";
 import { CrudContext } from "../../context/context";
 export default function RecepieList() {
   let btnClassNames = `${btnStyle.btn_add_recepie} ${btnStyle.btn_primary}`;
-  const ctx = useContext(CrudContext);
+  const { recepies, handleRecepieAdd } = useContext(CrudContext);
 
   return (
     <div className={styles.recipie_list}>
-      {ctx.recepies.map((recepie) => {
+      {recepies.map((recepie) => {
         return <Recepie key={recepie.id} {...recepie} />;
       })}
       <div className={styles.recipie_list_btn_container}>
-        <button className={btnClassNames} onClick={ctx.handleRecepieAdd}>
+        <button className={btnClassNames} onClick={handleRecepieAdd}>
           Add Recepie
         </button>
       </div>

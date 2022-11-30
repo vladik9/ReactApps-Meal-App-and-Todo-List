@@ -4,16 +4,8 @@ import btnStyle from "../../Css/Btn.module.css";
 import { CrudContext } from "../../context/context";
 
 export default function Recepie(props) {
-  const ctx = useContext(CrudContext);
-  const {
-    name,
-    coockTime,
-    serving,
-    instructions,
-    ingredients,
-    handleDeleteRecepe,
-    handleUpdateRecepe,
-  } = props;
+  const { handleUpdateRecepe, handleDeleteRecepe } = useContext(CrudContext);
+  const { name, coockTime, serving, instructions, ingredients } = props;
   const editBtnStyle = `${btnStyle.btn_edit_delete} ${btnStyle.btn_primary}`;
   const deleteBtnStyle = `${btnStyle.btn_edit_delete} ${btnStyle.btn_secondary}`;
 
@@ -24,13 +16,13 @@ export default function Recepie(props) {
       </div>
       <button
         className={editBtnStyle}
-        onClick={() => ctx.handleUpdateRecepe(props.id)}
+        onClick={() => handleUpdateRecepe(props.id)}
       >
         Edit
       </button>
       <button
         className={deleteBtnStyle}
-        onClick={() => ctx.handleDeleteRecepe(props.id)}
+        onClick={() => handleDeleteRecepe(props.id)}
       >
         Delete
       </button>
