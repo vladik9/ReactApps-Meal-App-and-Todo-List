@@ -1,11 +1,14 @@
-import React, { useState, useContext } from "react";
-import RecepieList from "./Components/RecepieList/RecepieList";
-import styles from "./Css/App.module.css";
+import React, { createContext, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-// import { MainCrudContext, CrudContext } from "./context/context";
+//initial recipe
+export const CrudContext = createContext({
+  recepiesList: "",
+  handleRecepieAdd: () => {},
+  handleDeleteRecepe: () => {},
+  handleUpdateRecepe: () => {},
+});
 
-export default function App() {
-  //initial recipe
+export function MainCrudContext() {
   const sampleRecepies = [
     {
       id: uuidv4(),
@@ -47,7 +50,6 @@ export default function App() {
     },
   ];
   const [recepies, setRecepies] = useState(sampleRecepies);
-  //here we handle new recpe
   const handleRecepieAdd = () => {
     const newRecepie = {
       id: uuidv4(),
@@ -73,11 +75,13 @@ export default function App() {
   const handleUpdateRecepe = () => {};
 
   return (
-    <RecepieList
-      recepies={recepies}
-      handleRecepieAdd={handleRecepieAdd}
-      handleDeleteRecepe={handleDeleteRecepe}
-      handleUpdateRecepe={handleUpdateRecepe}
-    />
+    <CrudContext.Provider
+      value={{
+        recepiesList: recepies,
+        handleRecepieAdd: handleRecepieAdd,
+        handleDeleteRecepe: handleDeleteRecepe,
+        handleUpdateRecepe: handleUpdateRecepe,
+      }}
+    ></CrudContext.Provider>
   );
 }
