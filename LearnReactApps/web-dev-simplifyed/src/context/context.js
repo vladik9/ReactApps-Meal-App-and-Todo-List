@@ -1,9 +1,11 @@
 import React, { createContext, useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
+
 const recepieStorageToken = "recepieStorageToken";
 //initial recipe
 export const CrudContext = createContext({
   recepies: "",
+  selectedRecepieData: "",
   handleRecepieAdd: () => {},
   handleDeleteRecepe: () => {},
   handleUpdateRecepe: () => {},
@@ -52,8 +54,9 @@ export default function MainContext(props) {
     },
   ];
   const [recepies, setRecepies] = useState(sampleRecepies);
+  const [selectedRecepieData, setSelectedRecepieData] = useState();
   //here we handle new recpe
-  const handleRecepieAdd = () => {
+  const handleRecepieAdd = (newRecepieCreated) => {
     const id = uuidv4();
     const newRecepie = {
       id: id,
@@ -75,24 +78,31 @@ export default function MainContext(props) {
     const new_list = recepies.filter((item) => item.id !== id);
     setRecepies(new_list);
   };
+  const handleUpdateRecepe = (id) => {
+    setSelectedRecepieData(
+      recepies.filter((recepie) => {
+        return recepie.id === id;
+      })
+    );
+  };
+
   useEffect(() => {
-    const recepieJson = localStorage.getItem(recepieStorageToken);
-    if (recepieJson !== null) {
-      setRecepies(JSON.parse(recepieJson));
-    }
-    localStorage.setItem(recepieStorageToken, JSON.stringify(sampleRecepies));
+    const recepieJson = JSON.parse(localStorage.getItem(recepieStorageToken));
+
+    if (recepieJson.length !== 0) {
+      setRecepies(recepieJson);
+    } else setRecepies(sampleRecepies);
   }, []);
 
   useEffect(() => {
     localStorage.setItem(recepieStorageToken, JSON.stringify(recepies));
   }, [recepies]);
 
-  const handleUpdateRecepe = () => {};
-
   return (
     <CrudContext.Provider
       value={{
         recepies,
+        selectedRecepieData,
         handleRecepieAdd,
         handleDeleteRecepe,
         handleUpdateRecepe,

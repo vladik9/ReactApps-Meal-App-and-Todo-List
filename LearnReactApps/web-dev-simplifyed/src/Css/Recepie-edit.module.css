@@ -1,0 +1,44 @@
+.recepie_edit{
+     padding: 30px ;
+     padding-top: 10px;
+     position: fixed;
+     right:0;
+     top: 0;
+     width: 50%;
+     max-height: 100%;
+     overflow-y: auto;
+}
+.recepie_grid{
+display: grid;
+grid-template-columns: auto 1fr;
+row-gap: 10px;
+column-gap: 40px;
+}
+.recepie_edit_lable{
+     font-weight: bold;
+}
+
+.recepie_edit_input{
+border: 1px solid black;
+border-radius: 5px;
+font-size: inherit;
+padding: 5px 10px;
+outline: none;
+width: 190px;
+margin:5px;
+
+}
+
+.ingredinets_grid{
+display: grid;
+grid-template-columns: repeat(3 , auto)  ;
+margin-top: 20px;
+padding: 10px;
+ 
+ 
+}
+
+.recepie_edit_grind_conatainer_btn{
+margin-top: 20px;
+text-align: center;
+}

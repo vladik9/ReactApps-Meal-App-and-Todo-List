@@ -3,6 +3,7 @@
 
 *, *::before, *::after{
      font-family: Gotham Rounded, sans-serif;
+     box-sizing: border-box;
 }
 
 html{font-size: 25px;}
@@ -11,3 +12,6 @@ body{
     margin: 0;
     padding: 0;
 }
+
+
+ 
