@@ -6,9 +6,13 @@ import { CrudContext } from "../../context/context";
 import EditRecepie from "../EditRecepie/EditRecepie";
 export default function RecepieList() {
   let btnClassNames = `${btnStyle.btn_add_recepie} ${btnStyle.btn_primary}`;
-  const { recepies, handleRecepieAdd, selectedRecepieData } = useContext(
-    CrudContext
-  );
+  const {
+    recepies,
+    handleRecepieAdd,
+    selectedRecepieData,
+    handleRecepieChangeData,
+    handleRecepieChangeDataIngredient,
+  } = useContext(CrudContext);
 
   return (
     <>
@@ -24,8 +28,10 @@ export default function RecepieList() {
       </div>
       {selectedRecepieData && (
         <EditRecepie
-          selectedRecepieData={selectedRecepieData[0]}
+          selectedRecepieData={selectedRecepieData}
           handleRecepieAdd={handleRecepieAdd}
+          handleRecepieChangeData={handleRecepieChangeData}
+          handleRecepieChangeDataIngredient={handleRecepieChangeDataIngredient}
         />
       )}
     </>

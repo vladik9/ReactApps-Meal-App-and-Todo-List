@@ -4,7 +4,11 @@ import styles from "../../Css/Recepie-edit.module.css";
 import btnStyle from "../../Css/Btn.module.css";
 
 let btnClassNames = `${btnStyle.btn_add_recepie} ${btnStyle.btn_primary}`;
-export default function EditRecepie({ selectedRecepieData, handleRecepieAdd }) {
+export default function EditRecepie({
+  selectedRecepieData,
+  handleRecepieChangeData,
+  handleRecepieChangeDataIngredient,
+}) {
   const {
     name,
     serving,
@@ -28,18 +32,18 @@ export default function EditRecepie({ selectedRecepieData, handleRecepieAdd }) {
           id="name"
           value={name}
           className={styles.recepie_edit_input}
-          onChange={handleRecepieAdd}
+          onChange={handleRecepieChangeData}
         ></input>
         <label htmlFor="time" className={styles.recepie_edit_lable}>
           Coock Time:
         </label>
         <input
           type="text"
-          name="time"
-          id="time"
+          name="coockTime"
+          id="coockTime"
           value={coockTime}
           className={styles.recepie_edit_input}
-          onChange={handleRecepieAdd}
+          onChange={handleRecepieChangeData}
         ></input>
         <label htmlFor="servings" className={styles.recepie_edit_lable}>
           Servings:
@@ -47,11 +51,11 @@ export default function EditRecepie({ selectedRecepieData, handleRecepieAdd }) {
         <input
           type="text"
           min="1"
-          name="servings"
-          id="servings"
+          name="serving"
+          id="serving"
           value={serving}
           className={styles.recepie_edit_input}
-          onChange={handleRecepieAdd}
+          onChange={handleRecepieChangeData}
         ></input>
         <label htmlFor="instructions" className={styles.recepie_edit_lable}>
           Instructions:
@@ -62,7 +66,7 @@ export default function EditRecepie({ selectedRecepieData, handleRecepieAdd }) {
           id="instructions"
           value={instructions}
           className={styles.recepie_edit_input}
-          onChange={handleRecepieAdd}
+          onChange={handleRecepieChangeData}
         ></textarea>
       </div>
       <div>
@@ -77,7 +81,9 @@ export default function EditRecepie({ selectedRecepieData, handleRecepieAdd }) {
               <Ingredients
                 key={ingredient.id}
                 ingredient={ingredient}
-                handleRecepieAdd={handleRecepieAdd}
+                handleRecepieChangeDataIngredient={
+                  handleRecepieChangeDataIngredient
+                }
               />
             );
           })}

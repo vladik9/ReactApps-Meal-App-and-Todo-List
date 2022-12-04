@@ -9,6 +9,8 @@ export const CrudContext = createContext({
   handleRecepieAdd: () => {},
   handleDeleteRecepe: () => {},
   handleUpdateRecepe: () => {},
+  handleRecepieChangeData: () => {},
+  handleRecepieChangeDataIngredient: () => {},
 });
 
 export default function MainContext(props) {
@@ -55,6 +57,23 @@ export default function MainContext(props) {
   ];
   const [recepies, setRecepies] = useState(sampleRecepies);
   const [selectedRecepieData, setSelectedRecepieData] = useState();
+  const handleRecepieChangeData = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+
+    setSelectedRecepieData((last) => {
+      return { ...last, [name]: value };
+    });
+  };
+  // this function should update the ingredients inputs
+  const handleRecepieChangeDataIngredient = (e) => {
+    console.log(e.target);
+    const name = e.target.name;
+    const value = e.target.value;
+    setSelectedRecepieData((last) => {
+      return { ...last, ingredients: [{ [name]: value }] };
+    });
+  };
   //here we handle new recpe
   const handleRecepieAdd = (newRecepieCreated) => {
     const id = uuidv4();
@@ -79,11 +98,7 @@ export default function MainContext(props) {
     setRecepies(new_list);
   };
   const handleUpdateRecepe = (id) => {
-    setSelectedRecepieData(
-      recepies.filter((recepie) => {
-        return recepie.id === id;
-      })
-    );
+    setSelectedRecepieData(recepies.find((recepie) => recepie.id === id));
   };
 
   useEffect(() => {
@@ -106,6 +121,8 @@ export default function MainContext(props) {
         handleRecepieAdd,
         handleDeleteRecepe,
         handleUpdateRecepe,
+        handleRecepieChangeData,
+        handleRecepieChangeDataIngredient,
       }}
     >
       {props.children}
