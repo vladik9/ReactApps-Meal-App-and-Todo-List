@@ -6,11 +6,14 @@ const recepieStorageToken = "recepieStorageToken";
 export const CrudContext = createContext({
   recepies: "",
   selectedRecepieData: "",
+  showEditFrame: "",
   handleRecepieAdd: () => {},
   handleDeleteRecepe: () => {},
   handleUpdateRecepe: () => {},
   handleRecepieChangeData: () => {},
   handleRecepieChangeDataIngredient: () => {},
+  handleDisableEditFrame: () => {},
+  handleSaveEditRecepie: () => {},
 });
 
 export default function MainContext(props) {
@@ -57,13 +60,32 @@ export default function MainContext(props) {
   ];
   const [recepies, setRecepies] = useState(sampleRecepies);
   const [selectedRecepieData, setSelectedRecepieData] = useState();
+  const [showEditFrame, setShowEditState] = useState(true);
+
   const handleRecepieChangeData = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-
     setSelectedRecepieData((last) => {
       return { ...last, [name]: value };
     });
+  };
+  const handleSaveEditRecepie = () => {
+    console.log(selectedRecepieData.id);
+    console.log(recepies);
+    // need to work here
+    // function for saving data from right panel to right
+    const index = recepies.findIndex((recepie) => {
+      return recepie.id === selectedRecepieData.id;
+    });
+    console.log(index);
+    const newArray = recepies[index];
+    console.log(newArray);
+    // setRecepies((prev) => {
+    //   return [...prev, selectedRecepieData];
+    // });
+  };
+  const handleDisableEditFrame = (value) => {
+    setShowEditState(value);
   };
   // this function should update the ingredients inputs
   const handleRecepieChangeDataIngredient = (e) => {
@@ -98,6 +120,7 @@ export default function MainContext(props) {
     setRecepies(new_list);
   };
   const handleUpdateRecepe = (id) => {
+    handleDisableEditFrame(true);
     setSelectedRecepieData(recepies.find((recepie) => recepie.id === id));
   };
 
@@ -118,11 +141,14 @@ export default function MainContext(props) {
       value={{
         recepies,
         selectedRecepieData,
+        showEditFrame,
         handleRecepieAdd,
         handleDeleteRecepe,
         handleUpdateRecepe,
         handleRecepieChangeData,
         handleRecepieChangeDataIngredient,
+        handleDisableEditFrame,
+        handleSaveEditRecepie,
       }}
     >
       {props.children}

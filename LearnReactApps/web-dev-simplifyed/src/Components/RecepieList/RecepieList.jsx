@@ -8,12 +8,10 @@ export default function RecepieList() {
   let btnClassNames = `${btnStyle.btn_add_recepie} ${btnStyle.btn_primary}`;
   const {
     recepies,
+    showEditFrame,
     handleRecepieAdd,
     selectedRecepieData,
-    handleRecepieChangeData,
-    handleRecepieChangeDataIngredient,
   } = useContext(CrudContext);
-
   return (
     <>
       <div className={styles.recipie_list}>
@@ -26,14 +24,12 @@ export default function RecepieList() {
           </button>
         </div>
       </div>
-      {selectedRecepieData && (
-        <EditRecepie
-          selectedRecepieData={selectedRecepieData}
-          handleRecepieAdd={handleRecepieAdd}
-          handleRecepieChangeData={handleRecepieChangeData}
-          handleRecepieChangeDataIngredient={handleRecepieChangeDataIngredient}
-        />
-      )}
+
+      {showEditFrame === true
+        ? selectedRecepieData && (
+            <EditRecepie selectedRecepieData={selectedRecepieData} />
+          )
+        : ""}
     </>
   );
 }

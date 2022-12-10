@@ -1,14 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import Ingredients from "./Ingredients/Ingredients";
 import styles from "../../Css/Recepie-edit.module.css";
 import btnStyle from "../../Css/Btn.module.css";
+import { CrudContext } from "../../context/context";
 
 let btnClassNames = `${btnStyle.btn_add_recepie} ${btnStyle.btn_primary}`;
-export default function EditRecepie({
-  selectedRecepieData,
-  handleRecepieChangeData,
-  handleRecepieChangeDataIngredient,
-}) {
+export default function EditRecepie({ selectedRecepieData }) {
   const {
     name,
     serving,
@@ -16,11 +13,30 @@ export default function EditRecepie({
     ingredients,
     coockTime,
   } = selectedRecepieData;
+  const {
+    handleRecepieChangeData,
+    handleRecepieChangeDataIngredient,
+    handleDisableEditFrame,
+    handleSaveEditRecepie,
+  } = useContext(CrudContext);
 
   return (
     <div className={styles.recepie_edit}>
       <div className={btnStyle.btn_remove_recepie}>
-        <button className={btnStyle.btn_edit_delete}>&times;</button>
+        <button
+          name="btn_save"
+          className={btnStyle.btn_edit_delete}
+          onClick={handleSaveEditRecepie}
+        >
+          &oplus;
+        </button>
+        <button
+          name="btn_delete"
+          onClick={() => handleDisableEditFrame(false)}
+          className={btnStyle.btn_edit_delete}
+        >
+          &otimes;
+        </button>
       </div>
       <div className={styles.recepie_grid}>
         <label htmlFor="name" className={styles.recepie_edit_lable}>
