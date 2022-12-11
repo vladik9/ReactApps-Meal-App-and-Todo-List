@@ -7,6 +7,7 @@ import { CrudContext } from "../../context/context";
 let btnClassNames = `${btnStyle.btn_add_recepie} ${btnStyle.btn_primary}`;
 export default function EditRecepie({ selectedRecepieData }) {
   const {
+    id,
     name,
     serving,
     instructions,
@@ -15,9 +16,10 @@ export default function EditRecepie({ selectedRecepieData }) {
   } = selectedRecepieData;
   const {
     handleRecepieChangeData,
-    handleRecepieChangeDataIngredient,
-    handleDisableEditFrame,
+    handleEnableEditFrame,
     handleSaveEditRecepie,
+    handleAddIngredient,
+    handleRecepieChangeDataIngredient,
   } = useContext(CrudContext);
 
   return (
@@ -32,7 +34,7 @@ export default function EditRecepie({ selectedRecepieData }) {
         </button>
         <button
           name="btn_delete"
-          onClick={() => handleDisableEditFrame(false)}
+          onClick={() => handleEnableEditFrame(false)}
           className={btnStyle.btn_edit_delete}
         >
           &otimes;
@@ -48,7 +50,7 @@ export default function EditRecepie({ selectedRecepieData }) {
           id="name"
           value={name}
           className={styles.recepie_edit_input}
-          onChange={handleRecepieChangeData}
+          onInput={handleRecepieChangeData}
         ></input>
         <label htmlFor="time" className={styles.recepie_edit_lable}>
           Coock Time:
@@ -59,7 +61,7 @@ export default function EditRecepie({ selectedRecepieData }) {
           id="coockTime"
           value={coockTime}
           className={styles.recepie_edit_input}
-          onChange={handleRecepieChangeData}
+          onInput={handleRecepieChangeData}
         ></input>
         <label htmlFor="servings" className={styles.recepie_edit_lable}>
           Servings:
@@ -71,7 +73,7 @@ export default function EditRecepie({ selectedRecepieData }) {
           id="serving"
           value={serving}
           className={styles.recepie_edit_input}
-          onChange={handleRecepieChangeData}
+          onInput={handleRecepieChangeData}
         ></input>
         <label htmlFor="instructions" className={styles.recepie_edit_lable}>
           Instructions:
@@ -82,7 +84,7 @@ export default function EditRecepie({ selectedRecepieData }) {
           id="instructions"
           value={instructions}
           className={styles.recepie_edit_input}
-          onChange={handleRecepieChangeData}
+          onInput={handleRecepieChangeData}
         ></textarea>
       </div>
       <div>
@@ -93,6 +95,9 @@ export default function EditRecepie({ selectedRecepieData }) {
           <span>Amount:</span>
           <div></div>
           {ingredients.map((ingredient) => {
+            {
+              console.log(ingredient);
+            }
             return (
               <Ingredients
                 key={ingredient.id}
@@ -106,7 +111,14 @@ export default function EditRecepie({ selectedRecepieData }) {
         </div>
       </div>
       <div className={styles.recepie_edit_grind_conatainer_btn}>
-        <button className={btnClassNames}>Add ingredient</button>
+        <button
+          className={btnClassNames}
+          onClick={() => {
+            handleAddIngredient(id);
+          }}
+        >
+          Add ingredient
+        </button>
       </div>
     </div>
   );

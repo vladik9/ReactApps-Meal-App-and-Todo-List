@@ -12,16 +12,20 @@ export default function Ingredients({
       <input
         type="text"
         name="name"
+        id={ingredient.id}
+        key={`${ingredient.id}+'name'`}
         value={ingredient.name}
         className={styles.recepie_edit_input}
-        onChange={handleRecepieChangeDataIngredient}
+        onInput={handleRecepieChangeDataIngredient}
       />
       <input
         type="text"
         name="amount"
+        id={ingredient.id}
+        key={`${ingredient.id}+'amount'`}
         value={ingredient.amount}
         className={styles.recepie_edit_input}
-        onChange={handleRecepieChangeDataIngredient}
+        onInput={handleRecepieChangeDataIngredient}
       />
       <button type="button" className={deleteBtnStyle}>
         &times;

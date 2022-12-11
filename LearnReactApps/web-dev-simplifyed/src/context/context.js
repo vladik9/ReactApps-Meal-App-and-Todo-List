@@ -12,8 +12,10 @@ export const CrudContext = createContext({
   handleUpdateRecepe: () => {},
   handleRecepieChangeData: () => {},
   handleRecepieChangeDataIngredient: () => {},
-  handleDisableEditFrame: () => {},
+  handleEnableEditFrame: () => {},
   handleSaveEditRecepie: () => {},
+  handleRecepieIngredientChangeData: () => {},
+  handleAddIngredient: () => {},
 });
 
 export default function MainContext(props) {
@@ -62,47 +64,77 @@ export default function MainContext(props) {
   const [selectedRecepieData, setSelectedRecepieData] = useState();
   const [showEditFrame, setShowEditState] = useState(true);
 
+  // get index of selected id and from provided array
+  const getIndex = (id, current_array) => {
+    return current_array.findIndex((element) => {
+      return element.id === id;
+    });
+  };
+
   const handleRecepieChangeData = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    setSelectedRecepieData((last) => {
-      return { ...last, [name]: value };
+    setSelectedRecepieData((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
     });
   };
-  const handleSaveEditRecepie = () => {
-    console.log(selectedRecepieData.id);
-    console.log(recepies);
-    // need to work here
-    // function for saving data from right panel to right
-    const index = recepies.findIndex((recepie) => {
-      return recepie.id === selectedRecepieData.id;
-    });
-    console.log(index);
-    const newArray = recepies[index];
-    console.log(newArray);
-    // setRecepies((prev) => {
-    //   return [...prev, selectedRecepieData];
-    // });
-  };
-  const handleDisableEditFrame = (value) => {
-    setShowEditState(value);
-  };
-  // this function should update the ingredients inputs
-  const handleRecepieChangeDataIngredient = (e) => {
-    console.log(e.target);
+  // this was used prev
+  const handleRecepieIngredientChangeData = (e) => {
+    const id = e.target.id;
     const name = e.target.name;
     const value = e.target.value;
-    setSelectedRecepieData((last) => {
-      return { ...last, ingredients: [{ [name]: value }] };
+    const index = getIndex(id, selectedRecepieData.ingredients);
+    const newIngredientsArray = [...selectedRecepieData.ingredients];
+    newIngredientsArray[index][name] = value;
+    setSelectedRecepieData((prev) => {
+      return {
+        ...prev,
+        ingredients: newIngredientsArray,
+      };
     });
   };
+
+  // this function should update the ingredients inputs
+  const handleRecepieChangeDataIngredient = (e) => {
+    const id = e.target.id;
+    const name = e.target.name;
+    const value = e.target.value;
+    const index = getIndex(id, selectedRecepieData.ingredients);
+    console.log(index);
+    const newRecepiesArray = [...selectedRecepieData.ingredients];
+    newRecepiesArray[index][name] = value;
+    console.log(newRecepiesArray);
+    // this should be reworked, shold not update value that is not in recepie
+    setSelectedRecepieData((last) => {
+      return {
+        ...last,
+        ingredients: newRecepiesArray,
+      };
+    });
+  };
+  //need to check here after
+  const handleSaveEditRecepie = () => {
+    const newRecepiesArray = [...recepies];
+    const index = getIndex(selectedRecepieData.id, recepies);
+    newRecepiesArray[index] = selectedRecepieData;
+    setRecepies(newRecepiesArray);
+    handleEnableEditFrame(false);
+  };
+
+  const handleEnableEditFrame = (value) => {
+    setShowEditState(value);
+  };
+
   //here we handle new recpe
-  const handleRecepieAdd = (newRecepieCreated) => {
+  const handleRecepieAdd = () => {
     const id = uuidv4();
     const newRecepie = {
       id: id,
       name: "",
-      serving: "",
+      serving: 1,
       coockTime: "",
       instructions: "",
       ingredients: [
@@ -114,19 +146,38 @@ export default function MainContext(props) {
       ],
     };
     setRecepies([...recepies, newRecepie]);
+    setSelectedRecepieData(newRecepie);
   };
+  const handleAddIngredient = (id) => {
+    const newIngredient = {
+      id: uuidv4(),
+      name: "",
+      amount: "",
+    };
+    const newIngredientsArray = {
+      ...selectedRecepieData,
+    };
+    newIngredientsArray.ingredients.push(newIngredient);
+    console.log(newIngredientsArray);
+    setSelectedRecepieData((last) => {
+      return {
+        ...last,
+        ingredients: [newIngredientsArray],
+      };
+    });
+  };
+
   const handleDeleteRecepe = (id) => {
-    const new_list = recepies.filter((item) => item.id !== id);
-    setRecepies(new_list);
+    const new_item = recepies.filter((item) => item.id !== id);
+    setRecepies(new_item);
   };
   const handleUpdateRecepe = (id) => {
-    handleDisableEditFrame(true);
+    setShowEditState(true);
     setSelectedRecepieData(recepies.find((recepie) => recepie.id === id));
   };
 
   useEffect(() => {
     const recepieJson = JSON.parse(localStorage.getItem(recepieStorageToken));
-
     if (recepieJson.length !== 0) {
       setRecepies(recepieJson);
     } else setRecepies(sampleRecepies);
@@ -143,11 +194,12 @@ export default function MainContext(props) {
         selectedRecepieData,
         showEditFrame,
         handleRecepieAdd,
+        handleAddIngredient,
         handleDeleteRecepe,
         handleUpdateRecepe,
         handleRecepieChangeData,
         handleRecepieChangeDataIngredient,
-        handleDisableEditFrame,
+        handleEnableEditFrame,
         handleSaveEditRecepie,
       }}
     >
