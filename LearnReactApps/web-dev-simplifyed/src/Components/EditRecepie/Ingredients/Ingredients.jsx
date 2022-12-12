@@ -17,7 +17,7 @@ export default function Ingredients({ ingredient }) {
         key={`${ingredient.id}+'name'`}
         value={ingredient.name}
         className={styles.recepie_edit_input}
-        onInput={handleRecepieIngredientChangeData}
+        onChange={handleRecepieIngredientChangeData}
       />
       <input
         type="text"
@@ -26,7 +26,7 @@ export default function Ingredients({ ingredient }) {
         key={`${ingredient.id}+'amount'`}
         value={ingredient.amount}
         className={styles.recepie_edit_input}
-        onInput={handleRecepieIngredientChangeData}
+        onChange={handleRecepieIngredientChangeData}
       />
       <button
         id={ingredient.id}

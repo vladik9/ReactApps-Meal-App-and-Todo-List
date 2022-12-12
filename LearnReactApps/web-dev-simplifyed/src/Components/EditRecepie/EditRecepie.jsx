@@ -49,7 +49,7 @@ export default function EditRecepie({ selectedRecepieData }) {
           id="name"
           value={name}
           className={styles.recepie_edit_input}
-          onInput={handleRecepieChangeData}
+          onChange={handleRecepieChangeData}
         ></input>
         <label htmlFor="time" className={styles.recepie_edit_lable}>
           Coock Time:
@@ -60,7 +60,7 @@ export default function EditRecepie({ selectedRecepieData }) {
           id="coockTime"
           value={coockTime}
           className={styles.recepie_edit_input}
-          onInput={handleRecepieChangeData}
+          onChange={handleRecepieChangeData}
         ></input>
         <label htmlFor="servings" className={styles.recepie_edit_lable}>
           Servings:
@@ -72,7 +72,7 @@ export default function EditRecepie({ selectedRecepieData }) {
           id="serving"
           value={serving}
           className={styles.recepie_edit_input}
-          onInput={handleRecepieChangeData}
+          onChange={handleRecepieChangeData}
         ></input>
         <label htmlFor="instructions" className={styles.recepie_edit_lable}>
           Instructions:
@@ -83,7 +83,7 @@ export default function EditRecepie({ selectedRecepieData }) {
           id="instructions"
           value={instructions}
           className={styles.recepie_edit_input}
-          onInput={handleRecepieChangeData}
+          onChange={handleRecepieChangeData}
         ></textarea>
       </div>
       <div>
