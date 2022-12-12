@@ -2,7 +2,6 @@ import React, { createContext, useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 const recepieStorageToken = "recepieStorageToken";
-//initial recipe
 export const CrudContext = createContext({
   recepies: "",
   selectedRecepieData: "",
@@ -11,11 +10,11 @@ export const CrudContext = createContext({
   handleDeleteRecepe: () => {},
   handleUpdateRecepe: () => {},
   handleRecepieChangeData: () => {},
-  handleRecepieChangeDataIngredient: () => {},
   handleEnableEditFrame: () => {},
   handleSaveEditRecepie: () => {},
   handleRecepieIngredientChangeData: () => {},
   handleAddIngredient: () => {},
+  handleRemoveIngredients: () => {},
 });
 
 export default function MainContext(props) {
@@ -65,11 +64,20 @@ export default function MainContext(props) {
   const [showEditFrame, setShowEditState] = useState(true);
 
   // get index of selected id and from provided array
-  const getIndex = (id, current_array) => {
+  function getIndex(id, current_array) {
     return current_array.findIndex((element) => {
       return element.id === id;
     });
-  };
+  }
+  //updating a keay in Array
+  function updateKeyInSelectedArray(key, value) {
+    setSelectedRecepieData((last) => {
+      return {
+        ...last,
+        [key]: value,
+      };
+    });
+  }
 
   const handleRecepieChangeData = (e) => {
     const name = e.target.name;
@@ -81,41 +89,16 @@ export default function MainContext(props) {
       };
     });
   };
-  // this was used prev
+
   const handleRecepieIngredientChangeData = (e) => {
-    const id = e.target.id;
     const name = e.target.name;
     const value = e.target.value;
-    const index = getIndex(id, selectedRecepieData.ingredients);
+    const index = getIndex(e.target.id, selectedRecepieData.ingredients);
     const newIngredientsArray = [...selectedRecepieData.ingredients];
     newIngredientsArray[index][name] = value;
-    setSelectedRecepieData((prev) => {
-      return {
-        ...prev,
-        ingredients: newIngredientsArray,
-      };
-    });
+    updateKeyInSelectedArray("ingredients", newIngredientsArray);
   };
 
-  // this function should update the ingredients inputs
-  const handleRecepieChangeDataIngredient = (e) => {
-    const id = e.target.id;
-    const name = e.target.name;
-    const value = e.target.value;
-    const index = getIndex(id, selectedRecepieData.ingredients);
-    console.log(index);
-    const newRecepiesArray = [...selectedRecepieData.ingredients];
-    newRecepiesArray[index][name] = value;
-    console.log(newRecepiesArray);
-    // this should be reworked, shold not update value that is not in recepie
-    setSelectedRecepieData((last) => {
-      return {
-        ...last,
-        ingredients: newRecepiesArray,
-      };
-    });
-  };
-  //need to check here after
   const handleSaveEditRecepie = () => {
     const newRecepiesArray = [...recepies];
     const index = getIndex(selectedRecepieData.id, recepies);
@@ -128,7 +111,6 @@ export default function MainContext(props) {
     setShowEditState(value);
   };
 
-  //here we handle new recpe
   const handleRecepieAdd = () => {
     const id = uuidv4();
     const newRecepie = {
@@ -148,23 +130,28 @@ export default function MainContext(props) {
     setRecepies([...recepies, newRecepie]);
     setSelectedRecepieData(newRecepie);
   };
-  const handleAddIngredient = (id) => {
+  const handleAddIngredient = () => {
     const newIngredient = {
       id: uuidv4(),
       name: "",
       amount: "",
     };
-    const newIngredientsArray = {
-      ...selectedRecepieData,
-    };
-    newIngredientsArray.ingredients.push(newIngredient);
-    console.log(newIngredientsArray);
+    const newIngredientsArray = [...selectedRecepieData.ingredients];
+    newIngredientsArray.push(newIngredient);
     setSelectedRecepieData((last) => {
       return {
         ...last,
-        ingredients: [newIngredientsArray],
+        ingredients: newIngredientsArray,
       };
     });
+  };
+  const handleRemoveIngredients = (id) => {
+    const filtredIngredientsArray = selectedRecepieData.ingredients.filter(
+      (el) => {
+        return el.id !== id;
+      }
+    );
+    updateKeyInSelectedArray("ingredients", filtredIngredientsArray);
   };
 
   const handleDeleteRecepe = (id) => {
@@ -198,9 +185,10 @@ export default function MainContext(props) {
         handleDeleteRecepe,
         handleUpdateRecepe,
         handleRecepieChangeData,
-        handleRecepieChangeDataIngredient,
         handleEnableEditFrame,
         handleSaveEditRecepie,
+        handleRecepieIngredientChangeData,
+        handleRemoveIngredients,
       }}
     >
       {props.children}

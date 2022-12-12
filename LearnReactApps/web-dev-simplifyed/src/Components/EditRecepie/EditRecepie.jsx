@@ -19,7 +19,6 @@ export default function EditRecepie({ selectedRecepieData }) {
     handleEnableEditFrame,
     handleSaveEditRecepie,
     handleAddIngredient,
-    handleRecepieChangeDataIngredient,
   } = useContext(CrudContext);
 
   return (
@@ -95,18 +94,7 @@ export default function EditRecepie({ selectedRecepieData }) {
           <span>Amount:</span>
           <div></div>
           {ingredients.map((ingredient) => {
-            {
-              console.log(ingredient);
-            }
-            return (
-              <Ingredients
-                key={ingredient.id}
-                ingredient={ingredient}
-                handleRecepieChangeDataIngredient={
-                  handleRecepieChangeDataIngredient
-                }
-              />
-            );
+            return <Ingredients key={ingredient.id} ingredient={ingredient} />;
           })}
         </div>
       </div>

@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "../../../Css/Recepie-edit.module.css";
 import btnStyle from "../../../Css/Btn.module.css";
-
+import { CrudContext } from "../../../context/context";
 const deleteBtnStyle = `${btnStyle.btn_edit_delete} ${btnStyle.btn_secondary}`;
-export default function Ingredients({
-  ingredient,
-  handleRecepieChangeDataIngredient,
-}) {
+export default function Ingredients({ ingredient }) {
+  const {
+    handleRecepieIngredientChangeData,
+    handleRemoveIngredients,
+  } = useContext(CrudContext);
   return (
     <>
       <input
@@ -16,7 +17,7 @@ export default function Ingredients({
         key={`${ingredient.id}+'name'`}
         value={ingredient.name}
         className={styles.recepie_edit_input}
-        onInput={handleRecepieChangeDataIngredient}
+        onInput={handleRecepieIngredientChangeData}
       />
       <input
         type="text"
@@ -25,9 +26,14 @@ export default function Ingredients({
         key={`${ingredient.id}+'amount'`}
         value={ingredient.amount}
         className={styles.recepie_edit_input}
-        onInput={handleRecepieChangeDataIngredient}
+        onInput={handleRecepieIngredientChangeData}
       />
-      <button type="button" className={deleteBtnStyle}>
+      <button
+        id={ingredient.id}
+        type="button"
+        className={deleteBtnStyle}
+        onClick={() => handleRemoveIngredients(ingredient.id)}
+      >
         &times;
       </button>
     </>
