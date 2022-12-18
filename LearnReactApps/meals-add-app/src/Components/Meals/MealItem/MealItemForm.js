@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useContext, useRef } from "react";
 import classes from "./MealItemForm.module.css";
 import Input from "../../UI/Input";
-export default function MealItemForm(props) {
+import CartContext from "../../context/CartContext";
+export default function MealItemForm({ item }) {
+  const ctx = useContext(CartContext);
+  const formRef = useRef(null);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const updateItem = {
+      ...item,
+      amount: formRef.current[0].value,
+    };
+    ctx.addItem(updateItem);
+  };
   return (
-    <form className={classes.form}>
+    <form className={classes.form} ref={formRef}>
       <Input
         label={"Amount"}
         input={{
@@ -15,7 +26,9 @@ export default function MealItemForm(props) {
           defaultValue: "1",
         }}
       />
-      <button type="submit">+ Add</button>
+      <button type="submit" onClick={handleSubmit}>
+        + Add
+      </button>
     </form>
   );
 }

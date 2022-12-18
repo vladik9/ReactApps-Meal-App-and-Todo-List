@@ -3,7 +3,7 @@ import classes from "./MeailItem.module.css";
 import MealForm from "./MealItemForm";
 export default function MealItem({ meal }) {
   const name = meal.name;
-  const meal_price = `${meal.price.toFixed(2)}`;
+  const meal_price = `$${meal.price.toFixed(2)}`;
   const description = meal.description;
 
   return (
@@ -14,7 +14,7 @@ export default function MealItem({ meal }) {
         <div className={classes.price}>{meal_price}</div>
       </div>
       <div>
-        <MealForm />
+        <MealForm item={meal} />
       </div>
     </li>
   );

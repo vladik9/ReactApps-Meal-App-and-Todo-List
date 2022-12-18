@@ -10,7 +10,7 @@ export default function HeaderCardButton(props) {
         <CartIcon />
       </span>
       <span>Your Cart</span>
-      <span className={classes.badge}>{ctx.tototalAmount}</span>
+      <span className={classes.badge}>{ctx.totalAmount.toFixed(2)}</span>
     </button>
   );
 }

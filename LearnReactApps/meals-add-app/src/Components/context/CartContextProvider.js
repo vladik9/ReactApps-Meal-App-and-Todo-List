@@ -1,12 +1,5 @@
 import CartContext from "./CartContext";
-//sample to uptade values
-// export const CartContext = createContext({
-//   items: [],
-//   tototalAmount: 0,
-//   addItem: () => {},
-//   removeItem: () => {},
-// });
-
+import { useReducer } from "react";
 const mealsListArray = [
   {
     id: "m1",
@@ -33,14 +26,35 @@ const mealsListArray = [
     price: 18.99,
   },
 ];
+const defaultCardState = { items: [], totalAmount: 0 };
 
+const cartReeducer = (state, action) => {
+  if (action.type === "ADD_ITEM") {
+    const updatedArray = state.items.concat(action.item);
+    const totalAmount = (state.totalAmount +=
+      action.item.price * action.item.amount);
+    return { items: updatedArray, totalAmount };
+  }
+
+  return defaultCardState;
+};
 export default function CartContextProvider(props) {
-  const addItemToCart = (id) => {};
-  const removeItemFromCart = (id) => {};
+  const [cartState, dispachCartAction] = useReducer(
+    cartReeducer,
+    defaultCardState
+  );
+
+  const addItemToCart = (item) => {
+    dispachCartAction({ type: "ADD_ITEM", item: item });
+  };
+  const removeItemFromCart = (item, amount) => {
+    // dispachCartAction({ type: "REMOVE_ITEM", item: { ...item, amount } });
+  };
+
   const CartContextValue = {
-    items: [],
+    items: cartState.items,
+    totalAmount: cartState.totalAmount,
     mealsListArray,
-    tototalAmount: 0,
     addItem: addItemToCart,
     remove: removeItemFromCart,
   };
