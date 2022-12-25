@@ -27,7 +27,6 @@ const mealsListArray = [
   },
 ];
 const defaultCardState = { items: [], totalAmount: 0 };
-
 const cartReeducer = (state, action) => {
   if (action.type === "ADD_ITEM") {
     const updatedArray = state.items.concat(action.item);
@@ -35,7 +34,19 @@ const cartReeducer = (state, action) => {
       action.item.price * action.item.amount);
     return { items: updatedArray, totalAmount };
   }
-
+  if (action.type === "REMOVE_ITEM") {
+    const updatedArray = state.items.filter(
+      (item) => item.id !== action.itemId
+    );
+    const updateTotalAmount = state.items.filter(
+      (item) => item.id === action.itemId
+    );
+    const price = updateTotalAmount[0].amount * updateTotalAmount[0].price;
+    return {
+      items: updatedArray,
+      totalAmount: (state.totalAmount += -price),
+    };
+  }
   return defaultCardState;
 };
 export default function CartContextProvider(props) {
@@ -47,8 +58,8 @@ export default function CartContextProvider(props) {
   const addItemToCart = (item) => {
     dispachCartAction({ type: "ADD_ITEM", item: item });
   };
-  const removeItemFromCart = (item, amount) => {
-    // dispachCartAction({ type: "REMOVE_ITEM", item: { ...item, amount } });
+  const removeItemFromCart = (id) => {
+    dispachCartAction({ type: "REMOVE_ITEM", itemId: id });
   };
 
   const CartContextValue = {
@@ -56,7 +67,7 @@ export default function CartContextProvider(props) {
     totalAmount: cartState.totalAmount,
     mealsListArray,
     addItem: addItemToCart,
-    remove: removeItemFromCart,
+    removeItem: removeItemFromCart,
   };
   return (
     <CartContext.Provider value={CartContextValue}>
