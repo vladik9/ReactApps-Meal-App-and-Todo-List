@@ -4,6 +4,8 @@ import Modal from "../UI/Modal";
 import CartContext from "../context/CartContext";
 export default function Cart(props) {
   const { items, totalAmount, removeItem } = useContext(CartContext);
+  const updatedTotalAmount = `${totalAmount.toFixed(2)} $`;
+  const isThereItems = items.length > 0;
   const cartItems = (
     <ul className={classes["cart-items"]}>
       {items.map((item) => (
@@ -18,10 +20,11 @@ export default function Cart(props) {
           <div className={classes.total_amount}>
             <span>Amount</span>
             <span>
-              {item.amount} x {item.price} =
+              {item.amount} x {item.price}
             </span>
             <span>{(item.amount * item.price).toFixed(2)}$</span>
           </div>
+
           <hr />
         </li>
       ))}
@@ -33,7 +36,7 @@ export default function Cart(props) {
       {cartItems}
       <div className={classes.total}>
         <span>Final Price:</span>
-        <span> {totalAmount.toFixed(2)}$</span>
+        <span> {updatedTotalAmount}</span>
       </div>
       <div className={classes.actions}>
         <button
@@ -42,7 +45,7 @@ export default function Cart(props) {
         >
           Close
         </button>
-        <button className={classes.buntton}>Order</button>
+        {isThereItems && <button className={classes.buntton}>Order</button>}
       </div>
     </Modal>
   );

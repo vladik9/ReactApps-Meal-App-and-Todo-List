@@ -3,7 +3,7 @@
      margin: 0;
      padding: 0;
      /* this is used for making a scroll-behavior:   */
-     /* /* max-height: 20rem; */
+     /* max-height: 20rem;  */
      max-height: auto;
      overflow: auto;
 }

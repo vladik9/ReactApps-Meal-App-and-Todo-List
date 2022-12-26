@@ -1,16 +1,35 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import CartIcon from "../Cart/CartIcon";
 import classes from "./HeaderCardButton.module.css";
 import CartContext from "../context/CartContext";
 export default function HeaderCardButton(props) {
-  const ctx = useContext(CartContext);
+  const { items, totalAmount } = useContext(CartContext);
+
+  const [btnIsHighLighetd, setBtnIsHighLighted] = useState(false);
+  const cartButtonCss = `${classes.button} ${
+    btnIsHighLighetd ? classes.bump : ""
+  }`;
+
+  useEffect(() => {
+    if (items.length === 0) {
+      return;
+    }
+
+    setBtnIsHighLighted(true);
+    const timer = setTimeout(() => {
+      setBtnIsHighLighted(false);
+    }, 300);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [items]);
   return (
-    <button className={classes.button} onClick={() => props.onClick()}>
+    <button className={cartButtonCss} onClick={() => props.onClick()}>
       <span className={classes.icon}>
         <CartIcon />
       </span>
       <span>Your Cart</span>
-      <span className={classes.badge}>{ctx.totalAmount.toFixed(2)}</span>
+      <span className={classes.badge}>{totalAmount.toFixed(2)}</span>
     </button>
   );
 }

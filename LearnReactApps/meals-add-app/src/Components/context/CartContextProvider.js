@@ -1,5 +1,6 @@
 import CartContext from "./CartContext";
 import { useReducer } from "react";
+//default meals list
 const mealsListArray = [
   {
     id: "m1",
@@ -25,32 +26,33 @@ const mealsListArray = [
     description: "Healthy...and green...",
     price: 18.99,
   },
+  {
+    id: "m5",
+    name: "Indian Chicken",
+    description: "Sweet...and fresh...",
+    price: 16.99,
+  },
 ];
+
 const defaultCardState = { items: [], totalAmount: 0 };
 const cartReeducer = (state, action) => {
   if (action.type === "ADD_ITEM") {
+    const totalAmount = (state.totalAmount +=
+      +action.item.price * action.item.amount);
+
     if (state.items.length === 0) {
       const updatedArray = state.items.concat(action.item);
-      const totalAmount = (state.totalAmount +=
-        action.item.price * action.item.amount);
       return { items: updatedArray, totalAmount };
     } else {
-      // const index = state.items.map((item) => item.id.indexOf(action.item.id));
       const existingElement = state.items.filter(
         (item) => item.id === action.item.id
       );
       if (existingElement.length !== 0) {
         existingElement[0].amount =
-          parseInt(existingElement[0].amount) + parseInt(action.item.amount);
-
-        let totalAmount = (state.totalAmount +=
-          action.item.price * action.item.amount);
-
+          +existingElement[0].amount + action.item.amount;
         return { items: state.items, totalAmount };
       } else {
         const updatedArray = state.items.concat(action.item);
-        const totalAmount = (state.totalAmount +=
-          action.item.price * action.item.amount);
         return { items: updatedArray, totalAmount };
       }
     }
@@ -91,6 +93,7 @@ export default function CartContextProvider(props) {
     addItem: addItemToCart,
     removeItem: removeItemFromCart,
   };
+
   return (
     <CartContext.Provider value={CartContextValue}>
       {props.children}
