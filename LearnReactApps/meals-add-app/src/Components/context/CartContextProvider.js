@@ -29,8 +29,6 @@ const mealsListArray = [
 const defaultCardState = { items: [], totalAmount: 0 };
 const cartReeducer = (state, action) => {
   if (action.type === "ADD_ITEM") {
-    console.log("state ", state, "action ", action);
-
     if (state.items.length === 0) {
       const updatedArray = state.items.concat(action.item);
       const totalAmount = (state.totalAmount +=
@@ -38,19 +36,22 @@ const cartReeducer = (state, action) => {
       return { items: updatedArray, totalAmount };
     } else {
       // const index = state.items.map((item) => item.id.indexOf(action.item.id));
-      const index = state.items.includes(action.item);
+      const existingElement = state.items.filter(
+        (item) => item.id === action.item.id
+      );
+      if (existingElement.length !== 0) {
+        existingElement[0].amount =
+          parseInt(existingElement[0].amount) + parseInt(action.item.amount);
 
-      const newArray = state.items.concat(action.item);
-      console.log(newArray);
-      console.log("index on=", index);
-      //need to work here as this should check if an item is already in the list and add it.
-      if (!index) {
+        let totalAmount = (state.totalAmount +=
+          action.item.price * action.item.amount);
+
+        return { items: state.items, totalAmount };
+      } else {
         const updatedArray = state.items.concat(action.item);
         const totalAmount = (state.totalAmount +=
           action.item.price * action.item.amount);
         return { items: updatedArray, totalAmount };
-      } else {
-        return { items: state.item, totalAmount: state.totalAmount };
       }
     }
   }

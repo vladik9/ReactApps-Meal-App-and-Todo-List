@@ -18,9 +18,9 @@ export default function Cart(props) {
           <div className={classes.total_amount}>
             <span>Amount</span>
             <span>
-              {item.amount} x {item.price}
+              {item.amount} x {item.price} =
             </span>
-            <span>{item.amount * item.price}</span>
+            <span>{(item.amount * item.price).toFixed(2)}$</span>
           </div>
           <hr />
         </li>
